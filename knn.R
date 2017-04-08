@@ -70,7 +70,7 @@ myKNN <- function(x, data.train, k) {
   as.numeric(names(sort(table(sapply(neighbours, f)), decreasing = T)[1]))
 }
 
-set.seed(42)
+
 zad1 <- function () {
   K = seq(1, 29, 2)
   res = vector()
@@ -91,22 +91,23 @@ print (summary(zad1()))
 
 zad2 <- function () {
   subset = sample(x = data, size = 1000, replace = FALSE)
-  data.train = sort(data[subset], decreasing = F)
+  U = sort(data[subset], decreasing = F)
   data.test =  data[sample(x = data[-subset], size = 1000, replace = FALSE)]
-  target.train = sapply(data.train, f)
+  target.U = sapply(U, f)
   target.test = sapply(data.test, f)
   
-  prediction_1 = sapply(data.train, myKNN, data.train, 1)
-  generalizationError = 1 - sum(diag(table(prediction_1, target.train))) / length(target.train)
+  prediction_1 = sapply(U, myKNN, data.train = U, k = 1)
+  generalizationError = 1 - sum(diag(table(prediction_1, target.U))) / length(target.U)
   
-  prediction_2 = sapply(data.test, myKNN, data.train, 1)
+  prediction_2 = sapply(data.test, myKNN, data.train = U, k = 1)
   empiricError = 1 - sum(diag(table(prediction_2, target.test))) / length(target.test)
 
   abs(generalizationError - empiricError)
 }
 
 res2 = vector(length = 100)
-for (i in seq(1,100)) {
+for (i in seq(1,1000)) {
+  print (i)
   res2[i] = zad2()
 }
 testEpsZad2 <- max(sort(res2, decreasing = F)[1:95])
@@ -118,7 +119,7 @@ print (hoeffdingEps)
 
 zad3 <- function (n) {
   U = sort(data[sample(x = data, size = 1000, replace = FALSE)], decreasing = FALSE)
-  prediction = sapply(U, myKNN, data.train=U, k=1)
+  prediction = sapply(U, myKNN, data.train = U, k = 1)
   target = sapply(U, f)
   generalizationError = 1 - sum(diag(table(prediction, target))) / length(target)
   
@@ -130,7 +131,7 @@ zad3 <- function (n) {
     sample = (((i-1)*sample.size + 1) : (i*sample.size))
     U.train = sort(U[-sample], decreasing = FALSE)
     U.test = U[sample]
-    prediction.test = sapply(U.test, myKNN, data.train=U.train, k=1)
+    prediction.test = sapply(U.test, myKNN, data.train = U.train, k = 1)
     target.test = sapply(U.test, f)
     res[i] = 1 - sum(diag(table(prediction.test, target.test))) / length(target.test)
   }
