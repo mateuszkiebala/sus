@@ -29,10 +29,10 @@ data.iris = cbind(data.iris, virginica = as.numeric(iris$Species == iris.species
 data.iris.train = data.iris[subset,]
 data.iris.test = data.iris[-subset,]
 
-myNNet = newff(n.neurons = c(4,20,3), learning.rate.global = 0.4, momentum.global = 0.2,
+myNNet = newff(n.neurons = c(4,20,3), learning.rate.global = 0.3, momentum.global = 0.2,
                error.criterium = "LMS", Stao=NA, hidden.layer = "sigmoid", output.layer = "sigmoid")
 # Train
-myNNetModel = train(myNNet, data.iris.train[,1:4], data.iris.train[,6:8], report=F, n.shows = 100, show.step = 100)
+myNNetModel = train(myNNet, data.iris.train[,1:4], data.iris.train[,6:8], report=T, n.shows = 100, show.step = 100)
 
 # Test
 scores = sim.MLPnet(myNNetModel$net, data.iris.test[,1:4])

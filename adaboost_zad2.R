@@ -46,7 +46,7 @@ zad2_classificator <- function(learners, w) {
   return (list(best.error, best.a, best.h.ind))
 }
 
-T = 30
+T = 35
 H = list()
 A = numeric(length = T)
 ALPHAS = numeric(length = T)
